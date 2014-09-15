@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeaPot3D", "TeaPot3D\TeaPot3D.vcxproj", "{2FBDD2DB-F2D0-4813-90EB-AA393A61DACE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnowManExample", "SnowManExample\SnowManExample.vcxproj", "{2217EFC9-CA31-479B-AB7C-A86B768CDDC0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Object3DReading", "Object3DReading\Object3DReading.vcxproj", "{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FBDD2DB-F2D0-4813-90EB-AA393A61DACE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2FBDD2DB-F2D0-4813-90EB-AA393A61DACE}.Debug|Win32.Build.0 = Debug|Win32
+		{2FBDD2DB-F2D0-4813-90EB-AA393A61DACE}.Release|Win32.ActiveCfg = Release|Win32
+		{2FBDD2DB-F2D0-4813-90EB-AA393A61DACE}.Release|Win32.Build.0 = Release|Win32
+		{2217EFC9-CA31-479B-AB7C-A86B768CDDC0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2217EFC9-CA31-479B-AB7C-A86B768CDDC0}.Debug|Win32.Build.0 = Debug|Win32
+		{2217EFC9-CA31-479B-AB7C-A86B768CDDC0}.Release|Win32.ActiveCfg = Release|Win32
+		{2217EFC9-CA31-479B-AB7C-A86B768CDDC0}.Release|Win32.Build.0 = Release|Win32
+		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Debug|Win32.Build.0 = Debug|Win32
+		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Release|Win32.ActiveCfg = Release|Win32
+		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
