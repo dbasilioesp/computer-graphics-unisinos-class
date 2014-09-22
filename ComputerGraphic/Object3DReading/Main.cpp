@@ -10,7 +10,7 @@
 
 
 // angle of rotation for the camera direction
-float angle = 0.0f;
+float angle = 2.0f;
 // actual vector representing the camera's direction
 float lx=0.0f,lz=-1.0f;
 // XZ position of the camera
@@ -59,6 +59,8 @@ void computeDirection(float deltaAngle) {
 	angle += deltaAngle;
 	lx = sin(angle);
 	lz = -cos(angle);
+
+	cout << angle << endl;
 }
 
 void renderScene(void) {
@@ -89,18 +91,11 @@ void renderScene(void) {
 		glVertex3f( 100.0f, 0.0f, -100.0f);
 	glEnd();
 	
-	// Draw 36 Objects
-	for(int i = -3; i < 3; i++){
-		for(int j=-3; j < 3; j++) {
-			glPushMatrix();
-			glTranslatef(i*10.0,0,j * 10.0);
-			if(j % 2 == 0)
-				glRotatef(35.0f, 1.0f, 0.0f, 1.0f);
-			DrawMesh(mesh);
-			glPopMatrix();
-		}
-	}
-
+	glPushMatrix();
+		glTranslatef(10.0, 0.0, 10.0);
+		DrawMesh(mesh);
+	glPopMatrix();
+	
 	glutSwapBuffers();
 }
 
@@ -118,6 +113,7 @@ void pressKey(int key, int xx, int yy) {
 		case GLUT_KEY_UP : deltaMove = 0.5f; break;
 		case GLUT_KEY_DOWN : deltaMove = -0.5f; break;
 	}
+
 }
 
 void releaseKey(int key, int x, int y) {
@@ -152,6 +148,9 @@ int main(int argc, char **argv) {
 
 	// OpenGL init
 	glEnable(GL_DEPTH_TEST);
+
+	computePosition(deltaMove);
+	computeDirection(deltaAngle);
 
 	// enter GLUT event processing cycle
 	glutMainLoop();

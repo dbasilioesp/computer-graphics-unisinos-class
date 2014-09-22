@@ -4,6 +4,7 @@
 #include <vector>
 #include <GL\glut.h>
 
+
 using namespace std;
 
 
@@ -88,16 +89,9 @@ void DrawMesh(Mesh *mesh)
 {
 	
 	glTranslatef(0.0, 2.0, 0.0);
-	glBegin(GL_QUADS);
+	glBegin(GL_TRIANGLES);
 	for (int i = 0; i < mesh->polygons.size(); i++){
-
-		if(i % 5 == 0)
-			glColor3f(0.8f, 0.4f , 0.4f);
-		if(i % 5 == 1)
-			glColor3f(0.4f, 0.8f, 0.4f);
-		if(i % 5 == 2)
-			glColor3f(0.4f, 0.4f, 0.8f);
-
+		
 		int index0 = mesh->polygons[i].vertexes[0];
 		int index1 = mesh->polygons[i].vertexes[1];
 		int index2 = mesh->polygons[i].vertexes[2];
@@ -106,8 +100,11 @@ void DrawMesh(Mesh *mesh)
 		Vertex vertex1 = mesh->vertexes[index1];
 		Vertex vertex2 = mesh->vertexes[index2];
 
+		glColor3f(0.4f, 0.9f , 0.4f);
 		glVertex3f(vertex0.axis[0], vertex0.axis[1], vertex0.axis[2]);
+		glColor3f(0.9f, 0.4f , 0.4f);
 		glVertex3f(vertex1.axis[0], vertex1.axis[1], vertex1.axis[2]);
+		glColor3f(0.4f, 0.4f , 0.9f);
 		glVertex3f(vertex2.axis[0], vertex2.axis[1], vertex2.axis[2]);	
 	}
 	glEnd();
