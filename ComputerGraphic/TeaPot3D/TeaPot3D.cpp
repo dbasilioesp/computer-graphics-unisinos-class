@@ -10,7 +10,7 @@ GLfloat fovy, fAspect;
 GLfloat angleTea = 30.0f;
 
 // Função callback chamada para fazer o desenho
-void Desenha(void)
+void DisplayFunc(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -31,7 +31,7 @@ void Inicializa (void)
 }
 
 // Função usada para especificar o volume de visualização
-void EspecificaParametrosVisualizacao(void)
+void SetVisualization(void)
 {
 	// Especifica sistema de coordenadas de projeção
 	glMatrixMode(GL_PROJECTION);
@@ -51,7 +51,7 @@ void EspecificaParametrosVisualizacao(void)
 }
 
 // Função callback chamada quando o tamanho da janela é alterado 
-void AlteraTamanhoJanela(GLsizei w, GLsizei h)
+void ReshapeFunc(GLsizei w, GLsizei h)
 {
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
@@ -62,7 +62,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 
-	EspecificaParametrosVisualizacao();
+	SetVisualization();
 }
 
 // Função callback chamada para gerenciar eventos do mouse
@@ -76,7 +76,7 @@ void GerenciaMouse(int button, int state, int x, int y)
 		if (state == GLUT_DOWN) {  // Zoom-out
 			if (fovy <= 130) fovy += 5;
 		}
-	EspecificaParametrosVisualizacao();
+	SetVisualization();
 	glutPostRedisplay();
 }
 
@@ -100,8 +100,8 @@ int main(void)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(350,300);
 	glutCreateWindow("Visualizacao 3D");
-	glutDisplayFunc(Desenha);
-    glutReshapeFunc(AlteraTamanhoJanela);
+	glutDisplayFunc(DisplayFunc);
+    glutReshapeFunc(ReshapeFunc);
 	glutMouseFunc(GerenciaMouse);
 	glutKeyboardFunc(Keyboard);
 	Inicializa();
