@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeaPot3D", "TeaPot3D\TeaPot3D.vcxproj", "{2FBDD2DB-F2D0-4813-90EB-AA393A61DACE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnowManExample", "SnowManExample\SnowManExample.vcxproj", "{2217EFC9-CA31-479B-AB7C-A86B768CDDC0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Object3DReading", "Object3DReading\Object3DReading.vcxproj", "{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FitUp", "FitUp\FitUp.vcxproj", "{DC5B46C7-1210-405A-A65A-FDD4077AFD5A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framework", "Framework\Framework.vcxproj", "{E0A55FC2-8261-499A-961D-7FCEE0C08CF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +29,14 @@ Global
 		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Debug|Win32.Build.0 = Debug|Win32
 		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Release|Win32.ActiveCfg = Release|Win32
 		{B8A62C47-DDF1-4912-ABD5-52F4D0A0AD0D}.Release|Win32.Build.0 = Release|Win32
+		{DC5B46C7-1210-405A-A65A-FDD4077AFD5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DC5B46C7-1210-405A-A65A-FDD4077AFD5A}.Debug|Win32.Build.0 = Debug|Win32
+		{DC5B46C7-1210-405A-A65A-FDD4077AFD5A}.Release|Win32.ActiveCfg = Release|Win32
+		{DC5B46C7-1210-405A-A65A-FDD4077AFD5A}.Release|Win32.Build.0 = Release|Win32
+		{E0A55FC2-8261-499A-961D-7FCEE0C08CF5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E0A55FC2-8261-499A-961D-7FCEE0C08CF5}.Debug|Win32.Build.0 = Debug|Win32
+		{E0A55FC2-8261-499A-961D-7FCEE0C08CF5}.Release|Win32.ActiveCfg = Release|Win32
+		{E0A55FC2-8261-499A-961D-7FCEE0C08CF5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
