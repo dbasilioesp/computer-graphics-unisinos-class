@@ -1,6 +1,12 @@
+#include <iostream>
+#include <string>
 #include <stdlib.h>
 #include <math.h>
+#include <map>
+#include <vector>
 #include "MeshReading.h"
+#include "DrawString.h"
+#include "Object3D.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -8,20 +14,29 @@
 #include <GL/glut.h>
 #endif
 
+using namespace std;
+
 
 // angle of rotation for the camera direction
 float angle = 2.0f;
 // actual vector representing the camera's direction
 float lineSightX = 0.0f;
 float lineSightZ = -1.0f;
-// XZ position of the camera
+// camera position
 float x = 0.0f;
 float z = 5.0f;
-// the key states. These variables will be zero
-//when no key is being presses
 float deltaAngle = 0.0f;
 float deltaMove = 0.0f;
-Mesh *mesh;
+map<string, Mesh*> meshes;
+vector<Object3D> world;
+
+
+void LoadingMeshes(){
+
+	meshes["venus"] = ReadMeshObject("../objects/venus.obj");
+	meshes["cat"] = ReadMeshObject("../objects/cat.obj");
+
+}
 
 
 void computePosition(float deltaMove) {
@@ -92,11 +107,18 @@ void DisplayFunc(void) {
 		glVertex3f( 100.0f, 0.0f, -100.0f);
 	glEnd();
 	
-	glPushMatrix();
-		glTranslatef(10.0, 0.0, 10.0);
-		DrawMesh(mesh);
-	glPopMatrix();
+	Object3D *object;
+	for (int i = 0; i < world.size(); i++)
+	{
+		object = &world[i];
+		glPushMatrix();
+			glTranslatef(object->x, object->y, object->z);
+			DrawMesh(meshes[object->meshName]);
+		glPopMatrix();
+	}
 	
+	DrawString(10, 20, "Testing");
+
 	glutSwapBuffers();
 }
 
@@ -107,7 +129,6 @@ void processNormalKeys(unsigned char key, int xx, int yy) {
 
 	switch(key){
 		case '1':
-			mesh = ReadMeshObject("../objects/venus.obj");
 			break;
 	}
 }
@@ -135,8 +156,6 @@ void releaseKey(int key, int x, int y) {
 
 int main(int argc, char **argv) {
 
-	mesh = ReadMeshObject("../objects/cat.obj");
-
 	// init GLUT and create window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -158,6 +177,14 @@ int main(int argc, char **argv) {
 
 	computePosition(deltaMove);
 	computeDirection(deltaAngle);
+	
+	LoadingMeshes();
+
+	Object3D venus(10.0, 2.0, 10.0, "venus");
+	world.push_back(venus);
+
+	Object3D cat(10.0, 0.0, 30.0, "cat");
+	world.push_back(cat);
 
 	// enter GLUT event processing cycle
 	glutMainLoop();
