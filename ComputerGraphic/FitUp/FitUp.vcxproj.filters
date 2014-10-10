@@ -26,13 +26,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MeshReading.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DrawString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Object3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
