@@ -250,6 +250,18 @@ void commonRenderItems() {
 		}
 }
 
+// Global idle func
+void renderSceneAll() {
+
+	// check for keyboard movement
+	if (deltaMove)
+		computePos(deltaMove);
+
+	renderScenesw1();
+	renderScenesw2();
+	renderScenesw3();
+}
+
 // Display func for main window
 void renderScene() {
 	glutSetWindow(mainWindow);
@@ -344,17 +356,6 @@ void renderScenesw3() {
 	glutSwapBuffers();
 }
 
-// Global idle func
-void renderSceneAll() {
-
-	// check for keyboard movement
-	if (deltaMove)
-		computePos(deltaMove);
-
-	renderScenesw1();
-	renderScenesw2();
-	renderScenesw3();
-}
 
 // -----------------------------------
 //             KEYBOARD
@@ -369,6 +370,11 @@ void processNormalKeys(unsigned char key, int xx, int yy) {
 		glutDestroyWindow(mainWindow);
 		exit(0);
 	}
+
+	if(key == 'n'){
+		glutSetCursor(GLUT_CURSOR_SPRAY);
+	}
+
 }
 
 void pressKey(int key, int xx, int yy) {

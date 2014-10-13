@@ -129,13 +129,13 @@ void renderScene(void) {
 
 	// Reset transformations
 	glLoadIdentity();
+
 	// Set the camera
 	gluLookAt(	x, 1.0f, z,
 			x+lx, 1.0f,  z+lz,
 			0.0f, 1.0f,  0.0f);
 
-// Draw ground
-
+	// Draw ground
 	glColor3f(0.9f, 0.9f, 0.9f);
 	glBegin(GL_QUADS);
 		glVertex3f(-100.0f, 0.0f, -100.0f);
@@ -144,8 +144,7 @@ void renderScene(void) {
 		glVertex3f( 100.0f, 0.0f, -100.0f);
 	glEnd();
 
-// Draw 36 SnowMen
-
+	// Draw 36 SnowMen
 	for(int i = -3; i < 3; i++)
 		for(int j=-3; j < 3; j++) {
                      glPushMatrix();
@@ -153,35 +152,36 @@ void renderScene(void) {
                      drawSnowMan();
                      glPopMatrix();
                }
-        glutSwapBuffers();
+
+	glutSwapBuffers();
 } 
 
 void processNormalKeys(unsigned char key, int xx, int yy) { 	
 
-        if (key == 27)
-              exit(0);
+    if (key == 27)
+		exit(0);
 } 
 
 void pressKey(int key, int xx, int yy) {
 
-       switch (key) {
-             case GLUT_KEY_UP : deltaMove = 0.5f; break;
-             case GLUT_KEY_DOWN : deltaMove = -0.5f; break;
-       }
+    switch (key) {
+        case GLUT_KEY_UP : deltaMove = 0.5f; break;
+        case GLUT_KEY_DOWN : deltaMove = -0.5f; break;
+    }
 } 
 
 void releaseKey(int key, int x, int y) { 	
 
-        switch (key) {
-             case GLUT_KEY_UP :
-             case GLUT_KEY_DOWN : deltaMove = 0;break;
-        }
+    switch (key) {
+        case GLUT_KEY_UP :
+        case GLUT_KEY_DOWN : deltaMove = 0;break;
+    }
 } 
 
-void mouseMove(int x, int y) { 	
+void mouseMove(int x, int y) {
 
-         // this will only be true when the left button is down
-         if (xOrigin >= 0) {
+    // this will only be true when the left button is down
+    if (xOrigin >= 0) {
 
 		// update deltaAngle
 		deltaAngle = (x - xOrigin) * 0.001f;
@@ -202,7 +202,7 @@ void mouseButton(int button, int state, int x, int y) {
 			angle += deltaAngle;
 			xOrigin = -1;
 		}
-		else  {// state = GLUT_DOWN
+		else  {  // state = GLUT_DOWN
 			xOrigin = x;
 		}
 	}

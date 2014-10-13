@@ -14,7 +14,7 @@ struct Vertex
 	float axis[3];
 };
 
-struct Polygon
+struct Face
 {
 	vector<int> vertexes;
 };
@@ -22,7 +22,7 @@ struct Polygon
 struct Mesh
 {
 	vector<Vertex> vertexes;
-	vector<Polygon> polygons;
+	vector<Face> faces;
 };
 
 
@@ -75,7 +75,7 @@ Mesh* ReadMeshObject(string filename)
 			
 			if(token == "f"){
 			
-				Polygon polygon;
+				Face face;
 			
 				while(lineStream >> token){
 					
@@ -84,16 +84,16 @@ Mesh* ReadMeshObject(string filename)
 					if(found != string::npos){
 						istringstream aux(token.substr(0, found));
 						aux >> vertexReference;
-						polygon.vertexes.push_back(vertexReference - 1);
+						face.vertexes.push_back(vertexReference - 1);
 					} else {
 						istringstream aux(token);
 						aux >> vertexReference;
-						polygon.vertexes.push_back(vertexReference - 1);
+						face.vertexes.push_back(vertexReference - 1);
 					}
 				
 				}
 			
-				mesh->polygons.push_back(polygon);
+				mesh->faces.push_back(face);
 			}
 		}
 

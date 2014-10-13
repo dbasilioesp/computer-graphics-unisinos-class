@@ -35,8 +35,9 @@ vector<Object3D*> world;
 Object3D *objectSelected;
 
 void DrawObject(Object3D *object);
+void DrawGround();
 void DrawHUD();
-void LoadMeshes();
+void LoadMeshFiles();
 void ComputePosition(float deltaMove);
 void ComputeDirection(float deltaAngle);
 void ReshapeFunc(int w, int h);
@@ -69,8 +70,7 @@ int main(int argc, char **argv) {
 
 	ComputePosition(deltaMove);
 	ComputeDirection(deltaAngle);
-	
-	LoadMeshes();
+	LoadMeshFiles();
 
 	Object3D *venus = new Object3D(10.0, 2.0, 10.0, 0.5, "venus");
 	venus->setColor(44, 44, 80);
@@ -89,40 +89,76 @@ int main(int argc, char **argv) {
 
 void DrawObject(Object3D *object){
 
+	Mesh *mesh = meshes[object->meshName];
+
 	glPushMatrix();
+		
 		glTranslatef(object->x, object->y, object->z);
+		
 		if(object->scale != 1.0){
 			glScalef(object->scale, object->scale, object->scale);
 		}
-			
-		Mesh *mesh = meshes[object->meshName];
-
-		glBegin(GL_TRIANGLES);
-		for (int i = 0; i < mesh->polygons.size(); i++){
 		
-			int index0 = mesh->polygons[i].vertexes[0];
-			int index1 = mesh->polygons[i].vertexes[1];
-			int index2 = mesh->polygons[i].vertexes[2];
+		for (int i = 0; i < mesh->faces.size(); i++){
 
-			Vertex vertex0 = mesh->vertexes[index0];
-			Vertex vertex1 = mesh->vertexes[index1];
-			Vertex vertex2 = mesh->vertexes[index2];
-
-			glColor3ub(object->color[0], object->color[1], object->color[2]);
+			int size = mesh->faces[i].vertexes.size();
 			
-			glVertex3f(vertex0.axis[0], vertex0.axis[1], vertex0.axis[2]);
-			glVertex3f(vertex1.axis[0], vertex1.axis[1], vertex1.axis[2]);
-			glVertex3f(vertex2.axis[0], vertex2.axis[1], vertex2.axis[2]);
+			if(size == 3){
+				glBegin(GL_TRIANGLES);
+			}else{
+				glBegin(GL_POLYGON);
+			}
+
+			for (int j = 0; j < size; j++){
+				int index = mesh->faces[i].vertexes[j];
+				Vertex vertex = mesh->vertexes[index];
+				glColor3ub(object->color[0], object->color[1], object->color[2]);
+				glVertex3f(vertex.axis[0], vertex.axis[1], vertex.axis[2]);
+			}
+
+			glEnd();
 		}
-		glEnd();
-
-
+	
 	glPopMatrix();
 
 }
 
 
-void LoadMeshes(){
+void DrawGround(){
+
+	// Draw ground
+	glColor3f(0.9f, 0.9f, 0.9f);
+	glBegin(GL_QUADS);
+		glVertex3f(-100.0f, 0.0f, -100.0f);
+		glVertex3f(-100.0f, 0.0f,  100.0f);
+		glVertex3f( 100.0f, 0.0f,  100.0f);
+		glVertex3f( 100.0f, 0.0f, -100.0f);
+	glEnd();
+	glColor3f(0.8f, 0.8f, 0.8f);
+	for (int i = -100; i < 100; i+=1){
+		glBegin(GL_LINES);
+			glVertex3f(i, 0.01f, -100);
+			glVertex3f(i, 0.01f, 100);
+			glVertex3f(-100, 0.01f, i);
+			glVertex3f(100, 0.01f, i);
+		glEnd();	
+	}
+}
+
+
+void DrawHUD(){
+
+	DrawString(10, 20, "[c] Change color");
+	DrawString(10, 40, "[+] Grow");
+	DrawString(10, 60, "[-] Reduce");
+
+	DrawString(windowWidth-90, 20, "Scale: %.1f", objectSelected->scale);
+	DrawString(10, windowHeight-10, "Colors: %d %d %d", objectSelected->color[0], objectSelected->color[1], objectSelected->color[2]);
+	DrawString(windowWidth-120, windowHeight-10, "x:%.0f y:%.0f z:%.0f", x, y, z);
+}
+
+
+void LoadMeshFiles(){
 
 	meshes["venus"] = ReadMeshObject("../objects/venus.obj");
 	meshes["cat"] = ReadMeshObject("../objects/cat.obj");
@@ -143,18 +179,6 @@ void ComputeDirection(float deltaAngle){
 	angle += deltaAngle;
 	lineSightX = sin(angle);
 	lineSightZ = -cos(angle);
-}
-
-
-void DrawHUD(){
-
-	DrawString(10, 20, "[c] Change color");
-	DrawString(10, 40, "[+] Grow");
-	DrawString(10, 60, "[-] Reduce");
-
-	DrawString(windowWidth-90, 20, "Scale: %.1f", objectSelected->scale);
-	DrawString(10, windowHeight-10, "Colors: %d %d %d", objectSelected->color[0], objectSelected->color[1], objectSelected->color[2]);
-	DrawString(windowWidth-120, windowHeight-10, "x:%.0f y:%.0f z:%.0f", x, y, z);
 }
 
 
@@ -179,8 +203,6 @@ void ReshapeFunc(int w, int h){
 	// Set the correct perspective.
 	gluPerspective(45.0f, ratio, 0.1f, 100.0f);
 
-	// Get Back to the Modelview
-	glMatrixMode(GL_MODELVIEW);
 }
 
 
@@ -195,6 +217,9 @@ void DisplayFunc(void) {
 	// Clear Color and Depth Buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Get Back to the Modelview
+	glMatrixMode(GL_MODELVIEW);
+
 	// Reset transformations
 	glLoadIdentity();
 
@@ -203,21 +228,16 @@ void DisplayFunc(void) {
 				x+lineSightX, y+lineSightY,  z+lineSightZ,
 				0.0f, 1.0f,  0.0f);
 
-	// Draw ground
-	glColor3f(0.9f, 0.9f, 0.9f);
-	glBegin(GL_QUADS);
-		glVertex3f(-100.0f, 0.0f, -100.0f);
-		glVertex3f(-100.0f, 0.0f,  100.0f);
-		glVertex3f( 100.0f, 0.0f,  100.0f);
-		glVertex3f( 100.0f, 0.0f, -100.0f);
-	glEnd();
+	DrawHUD();
 	
-	for (int i = 0; i < world.size(); i++)
-	{
+	DrawGround();
+	
+	for (int i = 0; i < world.size(); i++){
 		DrawObject(world[i]);
 	}
 
-	DrawHUD();
+	
+	meshes[objectSelected->meshName]->vertexes[0].axis[0];
 
 	glutSwapBuffers();
 }
