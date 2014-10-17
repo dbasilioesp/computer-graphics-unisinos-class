@@ -37,6 +37,8 @@ Object3D *objectSelected;
 void DrawObject(Object3D *object);
 void DrawGround();
 void DrawHUD();
+void DrawObjectSelected();
+void SelectNext();
 void LoadMeshFiles();
 void ComputePosition(float deltaMove);
 void ComputeDirection(float deltaAngle);
@@ -101,7 +103,7 @@ void DrawObject(Object3D *object){
 		
 		for (int i = 0; i < mesh->faces.size(); i++){
 
-			int size = mesh->faces[i].vertexes.size();
+			int size = mesh->faces[i].vertexIndices.size();
 			
 			if(size == 3){
 				glBegin(GL_TRIANGLES);
@@ -110,7 +112,7 @@ void DrawObject(Object3D *object){
 			}
 
 			for (int j = 0; j < size; j++){
-				int index = mesh->faces[i].vertexes[j];
+				int index = mesh->faces[i].vertexIndices[j];
 				Vertex vertex = mesh->vertexes[index];
 				glColor3ub(object->color[0], object->color[1], object->color[2]);
 				glVertex3f(vertex.axis[0], vertex.axis[1], vertex.axis[2]);
@@ -118,7 +120,7 @@ void DrawObject(Object3D *object){
 
 			glEnd();
 		}
-	
+
 	glPopMatrix();
 
 }
@@ -151,10 +153,106 @@ void DrawHUD(){
 	DrawString(10, 20, "[c] Change color");
 	DrawString(10, 40, "[+] Grow");
 	DrawString(10, 60, "[-] Reduce");
+	DrawString(10, 80, "[n] Next");
 
 	DrawString(windowWidth-90, 20, "Scale: %.1f", objectSelected->scale);
 	DrawString(10, windowHeight-10, "Colors: %d %d %d", objectSelected->color[0], objectSelected->color[1], objectSelected->color[2]);
 	DrawString(windowWidth-120, windowHeight-10, "x:%.0f y:%.0f z:%.0f", x, y, z);
+}
+
+void DrawObjectSelected(){
+
+	if(objectSelected){
+
+		vector<Vertex> *vertexes = &meshes[objectSelected->meshName]->vertexes;
+
+		float majorX = 0;
+		float minorX = 0;
+		float majorY = 0;
+		float minorY = 0;
+		float majorZ = 0;
+		float minorZ = 0;
+	
+		for (int i = 0; i < vertexes->size(); i++)
+		{
+			float *axis = vertexes->at(i).axis;
+		
+			if(axis[0] > majorX){
+				majorX = axis[0];
+			}
+			if(axis[1] > majorY){
+				majorY = axis[1];
+			}
+			if(axis[2] > majorZ){
+				majorZ = axis[2];
+			}
+			if(axis[0] < minorX){
+				minorX = axis[0];
+			}
+			if(axis[1] < minorY){
+				minorY = axis[1];
+			}
+			if(axis[2] < minorZ){
+				minorZ = axis[2];
+			}
+		}
+
+		glPushMatrix();
+			glTranslatef(objectSelected->x, objectSelected->y, objectSelected->z);
+			if(objectSelected->scale != 1.0){
+				glScalef(objectSelected->scale, objectSelected->scale, objectSelected->scale);
+			}
+			glLineWidth(2);
+			glColor3ub(255, 0, 0);
+			glBegin(GL_LINES);
+				glVertex3f( majorX+0.2, majorY+0.2, majorZ+0.2);
+				glVertex3f( majorX+0.2, majorY+0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, minorY-0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, minorY-0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, minorY-0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, minorY-0.2, minorZ-0.2);
+				glVertex3f( minorX-0.2, majorY+0.2, minorZ-0.2);
+				glVertex3f( minorX-0.2, majorY+0.2, majorZ+0.2);
+				glVertex3f( majorX+0.2, majorY+0.2, minorZ-0.2);
+				glVertex3f( minorX-0.2, majorY+0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, majorY+0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, majorY+0.2, majorZ+0.2);
+				glVertex3f( majorX+0.2, majorY+0.2, majorZ+0.2);
+				glVertex3f( majorX+0.2, minorY-0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, majorY+0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, minorY-0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, majorY+0.2, minorZ-0.2);
+				glVertex3f( minorX-0.2, minorY-0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, majorY+0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, minorY-0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, minorY-0.2, minorZ-0.2);
+				glVertex3f( minorX-0.2, minorY-0.2, minorZ-0.2);
+				glVertex3f( majorX+0.2, minorY-0.2, majorZ+0.2);
+				glVertex3f( minorX-0.2, minorY-0.2, majorZ+0.2);
+			glEnd();
+		glPopMatrix();
+
+	}
+
+}
+
+
+void SelectNext(){
+	if(objectSelected){
+		vector<Object3D*>::iterator it;
+
+		for (it = world.begin() ; it != world.end(); ++it){
+			if(objectSelected == *it){
+				++it;
+				if(it != world.end()){				
+					objectSelected = *it;
+				} else {
+					objectSelected = *world.begin();
+				}
+				break;
+			}
+		}
+	}
 }
 
 
@@ -206,6 +304,7 @@ void ReshapeFunc(int w, int h){
 }
 
 
+
 void DisplayFunc(void) {
 
 	if (deltaMove)
@@ -236,8 +335,7 @@ void DisplayFunc(void) {
 		DrawObject(world[i]);
 	}
 
-	
-	meshes[objectSelected->meshName]->vertexes[0].axis[0];
+	DrawObjectSelected();
 
 	glutSwapBuffers();
 }
@@ -256,6 +354,9 @@ void ProcessNormalKeys(unsigned char key, int xx, int yy) {
 			g = rand() % 256;
 			b = rand() % 256;
 			objectSelected->setColor(r, g, b);
+			break;
+		case 'n':
+			SelectNext();
 			break;
 		case '+':
 			objectSelected->scale += 0.1;

@@ -16,7 +16,7 @@ struct Vertex
 
 struct Face
 {
-	vector<int> vertexes;
+	vector<int> vertexIndices;
 };
 
 struct Mesh
@@ -30,6 +30,7 @@ Mesh* ReadMeshObject(string filename)
 {
 
 	Mesh *mesh = new Mesh;
+	Vertex *vertex;
 	ifstream infile;
 	string line, token;
 	int vertexReference = 0;
@@ -84,11 +85,11 @@ Mesh* ReadMeshObject(string filename)
 					if(found != string::npos){
 						istringstream aux(token.substr(0, found));
 						aux >> vertexReference;
-						face.vertexes.push_back(vertexReference - 1);
+						face.vertexIndices.push_back(vertexReference - 1);
 					} else {
 						istringstream aux(token);
 						aux >> vertexReference;
-						face.vertexes.push_back(vertexReference - 1);
+						face.vertexIndices.push_back(vertexReference - 1);
 					}
 				
 				}
