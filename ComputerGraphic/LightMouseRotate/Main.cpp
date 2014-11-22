@@ -26,16 +26,14 @@ void display(void)
 	glPushMatrix();
 	glRotated((GLdouble) spin, 1.0, 0.0, 0.0);
 	glLightfv(GL_LIGHT0, GL_POSITION, position);
-
-	glTranslated(0.0, 0.0, 1.5);
 	glDisable(GL_LIGHTING);
-
+	
+	glTranslated(0.0, 0.0, 1.5);
 	glColor3f(0.0, 1.0, 1.0);
 	glutWireCube(0.1);
-
+	
 	glEnable(GL_LIGHTING);
 	glPopMatrix();
-
 	glutSolidTorus(0.275, 0.85, 8, 15);
 	glPopMatrix();
 	glFlush();
